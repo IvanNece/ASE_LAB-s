@@ -61,6 +61,69 @@ end_loop_v2:
         j       loop_v1          ; Ritorna al ciclo di v1
 
 end_loop_v1:
+
+        ; Verifica se v3 è vuoto e imposta flag1
+        daddui  r14, r0, 0        ; Inizializza contatore per verificare elementi in v3
+        daddui  r15, r0, v3       ; Indirizzo del primo elemento di v3
+        daddui  r16, r0, 1        ; Inizializza flag1 a 1 (ipotesi: v3 vuoto)
+
+check_v3_empty:
+        beq     r14, r5, set_flag1 ; Se il contatore ha raggiunto l'indice attuale di v3, termina
+        lb      r17, 0(r15)       ; Carica il valore corrente di v3
+        bne     r17, r0, v3_not_empty ; Se il valore è diverso da 0, v3 non è vuoto
+        daddui  r15, r15, 1       ; Incrementa il puntatore di v3
+        daddui  r14, r14, 1       ; Incrementa il contatore
+        j       check_v3_empty    ; Continua a controllare
+
+v3_not_empty:
+        daddui  r16, r0, 0        ; Imposta flag1 a 0 se v3 non è vuoto
+
+set_flag1:
+        sb      r16, flag1(r0)    ; Salva il valore di flag1
+
+        ; Verifica se gli elementi di v3 sono in ordine crescente o decrescente
+        beqz    r5, end_check_flags ; Se v3 è vuoto, salta la verifica dei flag2 e flag3
+
+        daddui  r14, r0, v3       ; Inizializza il puntatore di v3
+        daddui  r15, r14, 1       ; Puntatore al secondo elemento di v3
+        daddui  r18, r0, 1        ; Inizializza flag2 a 1 (ipotesi: crescente)
+        daddui  r19, r0, 1        ; Inizializza flag3 a 1 (ipotesi: decrescente)
+
+check_v3_order:
+        slt     r20, r15, r3      ; Verifica se siamo ancora entro la lunghezza di v3
+        beqz    r20, set_flags2_3 ; Se abbiamo controllato tutti gli elementi, imposta i flag
+
+        lb      r21, 0(r14)       ; Carica l'elemento corrente di v3
+        lb      r22, 0(r15)       ; Carica il prossimo elemento di v3
+
+        ; Verifica se v3[i+1] > v3[i]
+        slt     r23, r21, r22
+        beqz    r23, not_increasing ; Se non è vero, disabilita flag2
+        j       check_decreasing
+
+not_increasing:
+        daddui  r18, r0, 0        ; Disabilita flag2
+
+check_decreasing:
+        ; Verifica se v3[i+1] < v3[i]
+        slt     r23, r22, r21
+        beqz    r23, not_decreasing ; Se non è vero, disabilita flag3
+        j       update_pointers
+
+not_decreasing:
+        daddui  r19, r0, 0        ; Disabilita flag3
+
+update_pointers:
+        daddui  r14, r14, 1       ; Incrementa il puntatore per il valore corrente
+        daddui  r15, r15, 1       ; Incrementa il puntatore per il prossimo valore
+        j       check_v3_order    ; Continua la verifica
+
+set_flags2_3:
+        sb      r18, flag2(r0)    ; Salva il valore di flag2
+        sb      r19, flag3(r0)    ; Salva il valore di flag3
+
+end_check_flags:
         ; Fine del programma
-        halt                    ; Termina l'esecuzione
+        halt                      ; Termina l'esecuzione
+
         
