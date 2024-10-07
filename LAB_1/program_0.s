@@ -2,23 +2,22 @@
 v1:     .byte 2, 6, -3, 11, 9, 18, -13, 16, 5, 1
 v2: 	.byte 4, 2, -13, 3, 9, 9, 7, 16, 4, 7
 v3: 	.space 10       ; Allocare spazio per il terzo array (massimo 10 elementi)
-v1_len: .word   10      ; Lunghezza di v1
-v2_len: .word   10      ; Lunghezza di v2
 flag1: 	.space 1
 flag2: 	.space 1
 flag3: 	.space 1
 
 
-        .code
+        .text
         ; Inizializza i registri per gli indirizzi di v1, v2, v3 e i contatori
         daddui  r1, r0, v1       ; Indirizzo del primo elemento di v1
         daddui  r2, r0, v2       ; Indirizzo del primo elemento di v2
         daddui  r3, r0, v3       ; Indirizzo del primo elemento di v3
         daddui  r4, r0, 0        ; Contatore per v1 (i)
         daddui  r5, r0, 0        ; Contatore per v3 (indice di v3)
-        lw      r6, v1_len       ; Carica la lunghezza di v1
-        lw      r7, v2_len       ; Carica la lunghezza di v2
 
+        ; Carica le lunghezze di v1 e v2
+        daddui  r6, r0, 10       ; Lunghezza di v1
+        daddui  r7, r0, 10       ; Lunghezza di v2
 
 loop_v1:
         ; Controlla se abbiamo finito di processare tutti gli elementi di v1
