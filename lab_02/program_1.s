@@ -28,7 +28,7 @@ v6: .space 512  ; 64x8 byte
 
 
 main:
-        daddui  r1, r0, 248      ; Imposta i = 31, con 248 byte = 31 * 8 byte
+        daddui r1, r0, 248      ; Imposta i = 31, con 248 byte = 31 * 8 byte
 
 loop_i:
         ; Carica v1[i], v2[i], e v3[i] (double precision)
@@ -55,7 +55,7 @@ loop_i:
         daddui  r1, r1, -8       ; Decrementa il puntatore di v1 (double = 8 byte)
 
         ; Controlla se i >= 0
-        bgez    r1, loop_i       ; Continua se non siamo arrivati alla fine del ciclo
+        bgez r1, loop_i          ; Continua se non siamo arrivati alla fine del ciclo
 
         j       end              ; Fine del programma
 
