@@ -35,7 +35,7 @@ loop_v2:
         ; Controlla se abbiamo finito di processare tutti gli elementi di v2
         slt     r12, r10, r7     ; r12 = 1 se r10 < r7 (ci sono ancora elementi da controllare)
         beqz    r12, end_loop_v2 ; Se r12 è 0, esci dal ciclo (fine v2)
-
+                
         ; Carica l'elemento corrente di v2
         lb      r13, 0(r11)      ; Carica il valore di v2[j] in r13
 

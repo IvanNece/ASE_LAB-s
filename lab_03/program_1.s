@@ -16,54 +16,53 @@ v3:     .double   26.2491, 33.8932, 68.9821, 0.9120, 30.8030, 9.0111, 17.0068, 2
 
 b:      .double   3.3333
 
-v4:     .space 256  ; allocazione di spazio per 32 numeri a doppia precisione per v4
-v5:     .space 256  ; allocazione di spazio per 32 numeri a doppia precisione per v5
-v6:     .space 256  ; allocazione di spazio per 32 numeri a doppia precisione per v6
+v4:     .space 256  ; spazio per memorizzare 32 valori double per v4
+v5:     .space 256  ; spazio per memorizzare 32 valori double per v5
+v6:     .space 256  ; spazio per memorizzare 32 valori double per v6
 
         .code
-main:   daddi r2, r2, 256       ; inizializza r2 con 256 per puntare all'ultima posizione
-        daddui r5, r5, 8        ; r5 utilizzato per decrementare di 8 byte (doppia precisione)
-        daddui r3, r0, 24       ; r3 = 3 * 8, per verificare multipli di 3
-        daddi r6, r6, 1         ; inizializza m a 1 in r6
+main:   daddi r2, r2, 256       ; imposta r2 per puntare alla fine degli array
+        daddui r5, r5, 8        ; r5 usato come decremento per spostarsi all'elemento precedente (ogni valore è 8 byte)
+        daddui r3, r0, 24       ; r3 = 3 * 8 per lavorare su indici multipli di 3
+        daddi r6, r6, 1         ; m inizializzato a 1 in r6
         l.d F10, b(r0)          ; carica il valore di b in F10
 
-for:    dsub r2, r2, r5         ; sposta il puntatore al prossimo elemento
+for:    dsub r2, r2, r5         ; decrementa r2 per accedere all'elemento precedente
 
-if:     ddiv r7, r2, r3         ; controlla se i è divisibile per 3
-        dmul r7, r7, r3         ; ricalcola r7 moltiplicando per 3
-        l.d F1, v1(r2)          ; carica v1[i] in F1
+if:     ddiv r7, r2, r3         ; controlla se l'indice è divisibile per 3
+        dmul r7, r7, r3         ; ricalcola l'indice con il risultato della divisione
+        l.d F1, v1(r2)          ; carica il valore di v1[i] in F1
 
-        bne r7, r2, else        ; se non è divisibile, vai al blocco else
+        bne r7, r2, else        ; se non è divisibile per 3, salta a 'else'
 
-        ; Operazione per l'if
-        ; a = v1[i] / ((double) m << i) (spostamento logico di m a sinistra)
+        ; Operazione se l'indice è divisibile per 3
+        ; a = v1[i] / ((double) m << i) (spostamento logico)
 
-        dsllv r6, r6, r2        ; sposta m a sinistra di i bit
-        mtc1 r6, F7             ; trasferisce r6 a F7 (registri a virgola mobile)
-        cvt.d.l F7, F7          ; converte il valore intero in doppia precisione
+        dsllv r6, r6, r2        ; esegui lo shift a sinistra di m in base a i
+        mtc1 r6, F7             ; sposta il valore intero da r6 a F7
+        cvt.d.l F7, F7          ; converte il valore intero in double precision
         div.d F8, F1, F7        ; F8 = v1[i] / (double)(m << i)
 
         j castM
 
-else:   dmul r6, r6, r2         ; m * i se non divisibile per 3
-        mtc1 r6, F7             ; trasferisce il risultato in F7
-        cvt.d.l F7, F7          ; converte il prodotto in doppia precisione
-        mul.d F8, F1, F7        ; F8 = v1[i] * (double)(m * i)
+else:   dmul r6, r6, r2         ; se l'indice non è divisibile per 3, moltiplica m per i
+        mtc1 r6, F7             ; sposta il risultato in F7
+        cvt.d.l F7, F7          ; converte m * i in double precision
+        mul.d F8, F1, F7        ; a = v1[i] * (double)(m * i)
 
         ; m = (int) a
-castM:  cvt.l.d F9, F8          ; converte F8 (double) in intero
-        mfc1 r6, F9             ; trasferisce l'intero in r6
+castM:  cvt.l.d F9, F8          ; converte il valore double in intero
+        mfc1 r6, F9             ; sposta il risultato in r6
 
-        ; Operazioni per v4, v5, v6
         l.d F2, v2(r2)          ; carica v2[i] in F2
         l.d F3, v3(r2)          ; carica v3[i] in F3
 
-        ; v4[i] = a * v1[i] - v2[i]
+        ; v4[i] = a * v1[i] – v2[i]
         mul.d F14, F8, F1       ; F14 = a * v1[i]
         sub.d F4, F14, F2       ; F4 = F14 - v2[i]
         s.d F4, v4(r2)          ; salva il risultato in v4[i]
 
-        ; v5[i] = v4[i] / v3[i] - b
+        ; v5[i] = v4[i] / v3[i] – b
         div.d F15, F4, F3       ; F15 = v4[i] / v3[i]
         sub.d F5, F15, F10      ; F5 = F15 - b
         s.d F5, v5(r2)          ; salva il risultato in v5[i]
@@ -73,7 +72,7 @@ castM:  cvt.l.d F9, F8          ; converte F8 (double) in intero
         mul.d F6, F16, F5       ; F6 = F16 * v5[i]
         s.d F6, v6(r2)          ; salva il risultato in v6[i]
 
-        bnez r2, for            ; ripete il ciclo finché r2 non è zero
+        bnez r2, for            ; se r2 != 0, continua il ciclo
         nop
 
-end:    halt                    ; ferma l'esecuzione
+end:    halt                    ; termina il programma

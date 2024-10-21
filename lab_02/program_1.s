@@ -1,4 +1,4 @@
-.data
+    .data
 v1: .double 0.99783045, 0.00017023, 0.16671799, 0.0709082, 0.61242463, 0.42469133, 0.17273317, 0.73215372
     .double 0.62463407, 0.33296767, 0.70504857, 0.57059103, 0.74400094, 0.99591749, 0.60278553, 0.17190698
     .double 0.23427507, 0.54117202, 0.1869301, 0.08358128, 0.13213843, 0.89589847, 0.36772047, 0.91563748
@@ -18,7 +18,7 @@ v4: .space 256       ; Spazio allocato per memorizzare i risultati del vettore v
 v5: .space 256       ; Spazio allocato per memorizzare i risultati del vettore v5
 v6: .space 256       ; Spazio allocato per memorizzare i risultati del vettore v6
 
-.text
+    .text
 main:
     daddui  r1,r0,256   ; Inizializza r1 con il valore 256. Questo serve per puntare all'ultima posizione degli array v1, v2 e v3, poiché il ciclo processa gli array dall'ultima posizione alla prima.
 
