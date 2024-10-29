@@ -32,6 +32,7 @@ for:    dsub r2, r2, r5         ; decrementa r2 per accedere all'elemento preced
 if:     ddiv r7, r2, r3         ; controlla se l'indice è divisibile per 3
         dmul r7, r7, r3         ; ricalcola l'indice con il risultato della divisione
         l.d F1, v1(r2)          ; carica il valore di v1[i] in F1
+       
 
         bne r7, r2, else        ; se non è divisibile per 3, salta a 'else'
 

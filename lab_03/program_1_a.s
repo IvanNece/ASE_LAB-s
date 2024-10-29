@@ -54,12 +54,14 @@ else:   dmul r6, r6, r2         ; m * i se non divisibile per 3
 castM:  cvt.l.d F9, F8          ; converte F8 (double) in intero
         mfc1 r6, F9             ; trasferisce l'intero in r6
 
+
+        ; v4[i] = a * v1[i] - v2[i]
+        mul.d F14, F8, F1       ; F14 = a * v1[i]
+
         ; Operazioni per v4, v5, v6
         l.d F2, v2(r2)          ; carica v2[i] in F2
         l.d F3, v3(r2)          ; carica v3[i] in F3
 
-        ; v4[i] = a * v1[i] - v2[i]
-        mul.d F14, F8, F1       ; F14 = a * v1[i]
         sub.d F4, F14, F2       ; F4 = F14 - v2[i]
         s.d F4, v4(r2)          ; salva il risultato in v4[i]
 
