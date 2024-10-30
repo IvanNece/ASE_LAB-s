@@ -1,0 +1,77 @@
+CONF INIZIALE ORIGINALE
+0.456584	0
+0.408966 	1
+0.406004	2
+0.407997	s
+0.406004	3
+0.405801	MATH
+
+CONF 1
+0.456584
+0.408966 
+0.406004
+0.407997 
+0.406004 
+0.405801
+
+CONF 2
+0.488468  
+0.428646 
+0.436444 
+0.435337 
+0.436444 
+0.436365 
+
+CONF 3
+0.622936 
+0.576217 
+0.579632 
+0.571329
+0.579632 
+0.579701
+
+CONF 4
+0.690884 
+0.633028 
+0.637306  
+0.626976
+0.637306
+0.634392
+
+CONF 5
+0.831807 	THE BESTTTTTT	
+0.793875 
+0.795641 
+0.776690 
+0.795641
+0.789945 
+
+CONF 5
+text       data        bss      total filename
+      6092       3992        616      10700 ./programs/my_c_benchmark_2/my_c_benchmark_2.elf
+
+text       data        bss      total filename
+      5940       3992        616      10548 ./programs/my_c_benchmark_2/my_c_benchmark_2.elf
+
+text       data        bss      total filename
+      5916       3992        616      10524 ./programs/my_c_benchmark_2/my_c_benchmark_2.elf
+
+text       data        bss      total filename
+      5894       3992        616      10502 ./programs/my_c_benchmark_2/my_c_benchmark_2.elf
+      
+text       data        bss      total filename
+      5916       3992        616      10524 ./programs/my_c_benchmark_2/my_c_benchmark_2.elf
+ 
+text       data        bss      total filename
+      5916       3992        616      10524 ./programs/my_c_benchmark_2/my_c_benchmark_2.elf
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
