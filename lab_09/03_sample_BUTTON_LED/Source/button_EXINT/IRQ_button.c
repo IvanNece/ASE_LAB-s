@@ -42,7 +42,7 @@ void EINT0_IRQHandler (void)
  */
 void debounce_delay(void) {
 	volatile uint32_t i = 0;
-    for (i = 0; i < 10000; i++) {
+    for (i = 0; i < 1000000; i++) {
         __NOP(); // Istruzione di No Operation (ritardo vuoto)
     }
 }
@@ -72,9 +72,10 @@ void key2_state() {
         // Calcola il prossimo stato
         state = next_state(state, taps, &output_bit);
         
+				debounce_delay();     // Attendi
         // Effetto visivo: accendi temporaneamente tutti i LED
         display_state(0xFF);  // Accendi tutti i LED
-        // debounce_delay();     // Attendi
+        
         
         // Mostra lo stato corrente sui LED
         display_state(state);
